@@ -1,0 +1,74 @@
+<!-- <dx-data-grid
+    [dataSource]="contactList"
+    keyExpr="id">
+</dx-data-grid> -->
+
+<h1 style="text-align: center; font-weight: bold;">
+    Contact Information
+</h1>
+
+<dx-data-grid
+    [dataSource]="contactList"
+    [allowColumnResizing]="true"
+    [columnAutoWidth]="true"
+    (onInitNewRow)="onInitNewRow($event)">
+
+    <dxo-editing
+        mode="popup"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+        [allowAdding]="true"
+        [useIcons]="true">
+
+        <dxo-form labelLocation="top">
+            <dxi-item itemType="group" caption="Contact Data">
+                <dxi-item dataField="id">
+                </dxi-item>
+                <dxi-item dataField="name"></dxi-item>
+                <dxi-item dataField="email"></dxi-item>
+                <dxi-item dataField="phoneNumber"></dxi-item>
+            </dxi-item>
+        </dxo-form>
+
+        <dxo-popup [showTitle]="true" title="Enter Contact Data" [width]="700" [height]="525"></dxo-popup>
+
+    </dxo-editing>
+    
+    <dxi-column
+        dataField="id"
+        sortOrder="asc"
+        [visible]="false"
+        [allowEditing]="false">
+    </dxi-column>
+
+    <dxi-column
+        dataField="name"
+        [fixed]="false">
+        <dxi-validation-rule type="required" message="The Name should not be Empty."></dxi-validation-rule>
+        <dxi-validation-rule type="pattern" pattern="^[a-zA-Z]+ [a-zA-Z]+$" message="The name is not properly formated"></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column
+        dataField="email"
+        [fixed]="false">
+        <dxi-validation-rule type="required" message="The Email should not be Empty."></dxi-validation-rule>
+        <dxi-validation-rule type="email"  message="Wrong Email Pattern."></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column 
+        dataField="phoneNumber"
+        [fixed]="false">
+        <dxi-validation-rule type="required" message="The Phone Number should not be Empty."></dxi-validation-rule>
+        <dxi-validation-rule type="pattern" pattern="^[0-9]{10}$" message="The Phone number must contain 10 digits."></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column type="buttons">
+        <dxi-button name="edit" cssClass="btn-crud" [onClick]="onEditClick()"></dxi-button>
+        <dxi-button name="delete" cssClass="btn-crud" [onClick]="onDeleteClick()"></dxi-button>
+    </dxi-column>
+    
+    
+
+    
+</dx-data-grid>
+

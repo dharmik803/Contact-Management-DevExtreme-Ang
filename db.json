@@ -1,0 +1,64 @@
+{
+  "contact": [
+    {
+      "id": 1,
+      "name": "Naruto Uzumaki",
+      "email": "naruto@example.com",
+      "phoneNumber": 1234567890
+    },
+    {
+      "id": 2,
+      "name": "Sasuke Uchiha",
+      "email": "sasuke@example.com",
+      "phoneNumber": 9876543210
+    },
+    {
+      "id": 3,
+      "name": "Sakura Haruno",
+      "email": "sakura@example.com",
+      "phoneNumber": 5555555555
+    },
+    {
+      "id": 4,
+      "name": "Kakashi Hatake",
+      "email": "kakashi@example.com",
+      "phoneNumber": 7777777777
+    },
+    {
+      "id": 5,
+      "name": "Hinata Hyuga",
+      "email": "hinata@example.com",
+      "phoneNumber": 8888888888
+    },
+    {
+      "id": 6,
+      "name": "Shikamaru Nara",
+      "email": "shikamaru@example.com",
+      "phoneNumber": 1111111111
+    },
+    {
+      "id": 7,
+      "name": "Minato Namikaze",
+      "email": "minato@example.com",
+      "phoneNumber": 2222222222
+    },
+    {
+      "id": 8,
+      "name": "Rock Lee",
+      "email": "rocklee@example.com",
+      "phoneNumber": 3333333333
+    },
+    {
+      "id": 9,
+      "name": "Gaara",
+      "email": "gaara@example.com",
+      "phoneNumber": 4444444444
+    },
+    {
+      "id": 10,
+      "name": "Jiraiya Sensei",
+      "email": "jiraiya@example.com",
+      "phoneNumber": 6666666666
+    }
+  ]
+}
