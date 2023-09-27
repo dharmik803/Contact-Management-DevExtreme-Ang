@@ -17,15 +17,15 @@ export class ContactService {
     return this.http.get<Contact[]>('http://localhost:3000/contact');
   }
 
-  addContact(contactIp: Contact){
-    return this.http.post('http://localhost:3000/contact', contactIp);
+  addContact(contactIp: Contact): Observable<Contact>{
+    return this.http.post<Contact>('http://localhost:3000/contact', contactIp);
   }
 
-  updateContact(contactIp: Contact){
+  updateContact(contactIp: Contact): Observable<Contact>{
     return this.http.put<Contact>(`http://localhost:3000/contact/${contactIp.id}`, contactIp);
   }
 
-  deleteContact(contactId: number){
-    return this.http.delete(`http://localhost:3000/contact/${contactId}`);
+  deleteContact(contactId: number) :Observable<Contact>{
+    return this.http.delete<Contact>(`http://localhost:3000/contact/${contactId}`);
   }
 }

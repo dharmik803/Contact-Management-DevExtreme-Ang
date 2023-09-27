@@ -28,7 +28,7 @@
       "id": 5,
       "name": "Hinata Hyuga",
       "email": "hinata@example.com",
-      "phoneNumber": 8888888888
+      "phoneNumber": 8888888777
     },
     {
       "id": 6,
@@ -58,7 +58,55 @@
       "id": 10,
       "name": "Jiraiya Sensei",
       "email": "jiraiya@example.com",
-      "phoneNumber": 6666666666
+      "phoneNumber": 6666666444
+    },
+    {
+      "id": 11,
+      "name": "Hashirama Senju",
+      "email": "hashirama@example.com",
+      "phoneNumber": 1236547896
+    },
+    {
+      "id": 12,
+      "name": "Obito Uchiha",
+      "email": "obito@example.com",
+      "phoneNumber": 5544778855
+    },
+    {
+      "id": 13,
+      "name": "Madara Uchiha",
+      "email": "madara@example.com",
+      "phoneNumber": 5523655898
+    },
+    {
+      "id": 14,
+      "name": "Might Guy",
+      "email": "guy@example.com",
+      "phoneNumber": 9985475541
+    },
+    {
+      "id": 15,
+      "name": "Tsunade Senju",
+      "email": "tsunade@example.com",
+      "phoneNumber": 7452154854
+    },
+    {
+      "id": 16,
+      "name": "Itachi Uchiha",
+      "email": "itachi@example.com",
+      "phoneNumber": 9696598568
+    },
+    {
+      "id": 17,
+      "name": "Neji Hyuga",
+      "email": "neji@example.com",
+      "phoneNumber": 9658745896
+    },
+    {
+      "id": 18,
+      "name": "Deidara",
+      "email": "deidara@example.com",
+      "phoneNumber": 7412589635
     }
   ]
 }
