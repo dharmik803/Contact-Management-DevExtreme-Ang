@@ -2,6 +2,7 @@
     [dataSource]="contactList"
     keyExpr="id">
 </dx-data-grid> -->
+<div id="app-container">
 
 <h1 style="text-align: center; font-weight: bold">Contact Information</h1>
 
@@ -12,7 +13,12 @@
   (onRowUpdated)="onEditRow($event)"
   (onRowInserted)="onAddRow($event)"
   (onRowRemoved)="onDeleteRow($event)"
+  (onSelectionChanged)="selectContact($event)"
+  (onRowPrepared)="onRowPrepared($event)"
 >
+
+<dxo-selection mode="single"></dxo-selection>
+
   <dxo-editing
     mode="popup"
     [allowUpdating]="true"
@@ -75,7 +81,7 @@
     ></dxi-validation-rule>
     <dxi-validation-rule
       type="pattern"
-      pattern="^[a-zA-Z]+$"
+      pattern="^[a-zA-Z\s]+$"
       message="The name is not properly formated"
     ></dxi-validation-rule>
   </dxi-column>
@@ -109,3 +115,9 @@
     <dxi-button name="delete" cssClass="btn-crud"></dxi-button>
   </dxi-column>
 </dx-data-grid>
+
+<p id="selected-contact" *ngIf="selectedContact">
+  Selected Contact: {{ selectedContact.name }}
+</p>
+
+</div>

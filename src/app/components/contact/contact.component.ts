@@ -24,8 +24,9 @@ export class ContactComponent implements OnInit {
     this.serv.getContactList().subscribe((data) => {
       this.contactList = data;
     });
-  }
 
+    this.selectContact = this.selectContact.bind(this);
+  }
 
   // ID Generation when popup is opened
   onInitNewRow(event: any) {
@@ -71,5 +72,24 @@ export class ContactComponent implements OnInit {
     this.serv.deleteContact(event.data.id).subscribe((res) => {
       console.log(res);
     });
+  }
+
+  // On Row Selection printing the name.
+  selectedContact!: Contact;
+
+  selectContact(c: any) {
+    c.component.byKey(c.currentSelectedRowKeys[0]).done((contact: any) => {
+      if (contact) {
+        this.selectedContact = contact;
+      }
+    });
+  }
+
+  onRowPrepared(event: any) {
+    if(event.rowType === 'data') {
+      if(event.data.name.includes('Uchiha')) {
+        event.rowElement.style.cssText = "color: white; background-color: green; text-align: center";
+      }
+    }
   }
 }

@@ -4,3 +4,21 @@
     background-color: lightblue;
 }
 
+#app-container {
+    /* width: 900px; */
+    position: relative;
+}
+ 
+#selected-contact {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: rgb(1, 100, 100);
+    color: antiquewhite;
+    padding: 8px;
+    border-radius: 2px;
+}
+
+.special-row{
+    background-color: firebrick !important;
+}
