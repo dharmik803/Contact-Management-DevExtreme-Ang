@@ -9,18 +9,18 @@
 <dx-data-grid
   [dataSource]="contactList"
   [columnAutoWidth]="true"
+  (onRowUpdated)="onRowUpdated($event)"
+  (onRowInserted)="onInsertedRow($event)"
+  (onRowRemoved)="onRowRemoved($event)"
   (onInitNewRow)="onInitNewRow($event)"
-  (onRowUpdated)="onEditRow($event)"
-  (onRowInserted)="onAddRow($event)"
-  (onRowRemoved)="onDeleteRow($event)"
-  (onSelectionChanged)="selectContact($event)"
-  (onRowPrepared)="onRowPrepared($event)"
+  (onEditCanceled)="onEditCanceled()"
+  (onEditingStart)="onEditingStart($event)"
 >
 
 <dxo-selection mode="single"></dxo-selection>
 
   <dxo-editing
-    mode="popup"
+    mode="row"
     [allowUpdating]="true"
     [allowDeleting]="true"
     [allowAdding]="true"
@@ -77,30 +77,30 @@
   <dxi-column dataField="name" alignment="center">
     <dxi-validation-rule
       type="required"
-      message="The Name should not be Empty."
+      message="Name is Required."
     ></dxi-validation-rule>
     <dxi-validation-rule
       type="pattern"
       pattern="^[a-zA-Z\s]+$"
-      message="The name is not properly formated"
+      message="The name is not properly formated."
     ></dxi-validation-rule>
   </dxi-column>
 
   <dxi-column dataField="email" alignment="center">
     <dxi-validation-rule
       type="required"
-      message="The Email should not be Empty."
+      message="Email is Required."
     ></dxi-validation-rule>
     <dxi-validation-rule
       type="email"
-      message="Wrong Email Pattern."
+      message="Email is InValid."
     ></dxi-validation-rule>
   </dxi-column>
 
   <dxi-column dataField="phoneNumber" alignment="center" [allowSorting]="false">
     <dxi-validation-rule
       type="required"
-      message="The Phone Number should not be Empty."
+      message="Phone Number is Required."
     ></dxi-validation-rule>
     <dxi-validation-rule
       type="stringLength"
@@ -116,8 +116,40 @@
   </dxi-column>
 </dx-data-grid>
 
-<p id="selected-contact" *ngIf="selectedContact">
-  Selected Contact: {{ selectedContact.name }}
-</p>
+<div class="form-container">
+    <dx-form id="form" 
+    [colCount]="2" 
+    [(formData)]="formData" 
+    [visible]="formVisible"
+    labelLocation="top"
+    >
+    <dxi-item dataField="name" [isRequired]="true">
+      <dxi-validation-rule 
+        type="pattern"
+        pattern="^[a-zA-Z\s]+$"
+        message="Name is not properly formated."
+      >
+      </dxi-validation-rule>
+    </dxi-item>
+    <dxi-item dataField="email" [isRequired]="true">
+      <dxi-validation-rule 
+        type="email"
+        message="Email is InValid."
+      >
+      </dxi-validation-rule>
+    </dxi-item>
+    <dxi-item dataField="phoneNumber" [isRequired]="true">
+      <dxi-validation-rule 
+        type="stringLength"
+        [max]="10"
+        [min]="10"
+        message="Phone number must contain 10 digits."
+      >
+      </dxi-validation-rule>
+    </dxi-item>
+  
+  </dx-form>
+</div>
+
 
 </div>

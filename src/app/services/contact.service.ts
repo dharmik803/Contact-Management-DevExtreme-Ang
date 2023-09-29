@@ -14,18 +14,18 @@ export class ContactService {
   constructor(private http: HttpClient) { }
 
   getContactList(): Observable<Contact[]>{
-    return this.http.get<Contact[]>('http://localhost:3000/contact');
+    return this.http.get<Contact[]>('https://localhost:7219/api/Contacts');
   }
 
   addContact(contactIp: Contact): Observable<Contact>{
-    return this.http.post<Contact>('http://localhost:3000/contact', contactIp);
+    return this.http.post<Contact>('https://localhost:7219/api/Contacts', contactIp);
   }
 
   updateContact(contactIp: Contact): Observable<Contact>{
-    return this.http.put<Contact>(`http://localhost:3000/contact/${contactIp.id}`, contactIp);
+    return this.http.put<Contact>(`https://localhost:7219/api/Contacts/${contactIp.contactId}`, contactIp);
   }
 
   deleteContact(contactId: number) :Observable<Contact>{
-    return this.http.delete<Contact>(`http://localhost:3000/contact/${contactId}`);
+    return this.http.delete<Contact>(`https://localhost:7219/api/Contacts/${contactId}`);
   }
 }

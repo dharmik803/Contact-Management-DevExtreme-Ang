@@ -22,3 +22,13 @@
 .special-row{
     background-color: firebrick !important;
 }
+
+#form {
+    width: 600px;
+}
+
+.form-container{
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}

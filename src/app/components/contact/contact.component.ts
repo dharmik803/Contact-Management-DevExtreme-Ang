@@ -13,6 +13,8 @@ export class ContactComponent implements OnInit {
   updatedData!: Contact;
   addedData!: Contact;
   deletedData!: Contact[];
+  formData!: Contact;
+  formVisible!: boolean;
 
   @ViewChild(DxDataGridComponent)
   dataGrid!: DxDataGridComponent;
@@ -24,72 +26,89 @@ export class ContactComponent implements OnInit {
     this.serv.getContactList().subscribe((data) => {
       this.contactList = data;
     });
-
-    this.selectContact = this.selectContact.bind(this);
+    this.formVisible = false;
   }
 
-  // ID Generation when popup is opened
-  onInitNewRow(event: any) {
-    event.data.id = this.contactList[this.contactList.length - 1].id + 1;
-    console.log(event.data);
-  }
 
   // Add row data function
-  onAddRow(event: any) {
+  onInitNewRow(event: any){
+    this.formVisible = true;
+    this.formData = {
+      contactId: 0,
+      name: '',
+      email: '',
+      phoneNumber: 0
+    }
+  }
+
+
+  onInsertedRow(event: any) {
+    console.log(event);
+
     this.addedData = {
-      id: event.data.id,
+      contactId: 0,
       name: event.data.name,
       email: event.data.email,
       phoneNumber: event.data.phoneNumber,
     };
 
     this.serv.addContact(this.addedData).subscribe((res) => {
-      console.log(res);
+      
     });
+    this.formVisible = false;
   }
 
   // Edit row data function
-  onEditRow(event: any) {
-    const tempData = this.contactList.find((data) => data.id === event.data.id);
+  onEditingStart(event: any){
+    this.formVisible = true;
+    this.formData = event.data
+  }
+
+  onEditCanceled(){
+    this.formVisible = false;
+  }
+
+  onRowUpdated(event: any) {
+
+    const tempData = this.contactList.find((data) => data.contactId === event.data.contactId);
     this.updatedData = {
-      id: tempData?.id,
+      contactId: tempData?.contactId,
       name: tempData?.name,
       email: tempData?.email,
       phoneNumber: tempData?.phoneNumber,
     } as Contact;
 
-    console.log(this.updatedData);
-
     this.serv.updateContact(this.updatedData).subscribe((res) => {
-      // console.log(res);
     });
+    this.formVisible = false;
   }
 
   // Delete row data function
-  onDeleteRow(event: any) {
-    console.log(event.data.id);
+  onRowRemoved(event: any) {
 
-    this.serv.deleteContact(event.data.id).subscribe((res) => {
-      console.log(res);
+    this.serv.deleteContact(event.data.contactId).subscribe((res) => {
+      
     });
   }
+
+
 
   // On Row Selection printing the name.
-  selectedContact!: Contact;
+  // selectedContact!: Contact;
 
-  selectContact(c: any) {
-    c.component.byKey(c.currentSelectedRowKeys[0]).done((contact: any) => {
-      if (contact) {
-        this.selectedContact = contact;
-      }
-    });
-  }
+  // selectContact(c: any) {
+  //   c.component.byKey(c.currentSelectedRowKeys[0]).done((contact: any) => {
+  //     if (contact) {
+  //       this.selectedContact = contact;
+  //     }
+  //   });
+  // }
 
-  onRowPrepared(event: any) {
-    if(event.rowType === 'data') {
-      if(event.data.name.includes('Uchiha')) {
-        event.rowElement.style.cssText = "color: white; background-color: green; text-align: center";
-      }
-    }
-  }
+  // onRowPrepared(event: any) {
+  //   if(event.rowType === 'data') {
+  //     if(event.data.name.includes('Uchiha')) {
+  //       event.rowElement.style.cssText = "color: white; background-color: green; text-align: center";
+  //     }
+  //   }
+  // }
 }
