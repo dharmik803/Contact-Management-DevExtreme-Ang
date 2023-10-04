@@ -1,155 +1,164 @@
-<!-- <dx-data-grid
-    [dataSource]="contactList"
-    keyExpr="id">
-</dx-data-grid> -->
 <div id="app-container">
+  <h1 style="text-align: center; font-weight: bold">Contact Information</h1>
 
-<h1 style="text-align: center; font-weight: bold">Contact Information</h1>
-
-<dx-data-grid
-  [dataSource]="contactList"
-  [columnAutoWidth]="true"
-  (onRowUpdated)="onRowUpdated($event)"
-  (onRowInserted)="onInsertedRow($event)"
-  (onRowRemoved)="onRowRemoved($event)"
-  (onInitNewRow)="onInitNewRow($event)"
-  (onEditCanceled)="onEditCanceled()"
-  (onEditingStart)="onEditingStart($event)"
->
-
-<dxo-selection mode="single"></dxo-selection>
-
-  <dxo-editing
-    mode="row"
-    [allowUpdating]="true"
-    [allowDeleting]="true"
-    [allowAdding]="true"
-    [useIcons]="true"
+  <dx-data-grid
+    [dataSource]="contactList"
+    [editing]="editingOptions"
+    [columnAutoWidth]="true"
+    [showBorders]="true"
+    (onRowUpdated)="onRowUpdated($event)"
+    (onRowUpdating)="onRowUpdating($event)"
+    (onRowInserted)="onInsertedRow($event)"
+    (onRowRemoved)="onRowRemoved($event)"
+    (onInitNewRow)="onInitNewRow($event)"
+    (onEditingStart)="onEditingStart($event)"
+    [focusedRowEnabled]="true"
+    [focusedRowIndex]="0"
+    (onFocusedRowChanged)="onFocusedRowChanged($event)"
+    (onRowDblClick)="onRowDblClick($event)"
   >
-    <dxo-form labelLocation="top">
-      <dxi-item itemType="group" caption="Contact Data">
-        <dxi-item dataField="id"> </dxi-item>
-        <dxi-item dataField="name"></dxi-item>
-        <dxi-item dataField="email"></dxi-item>
-        <dxi-item dataField="phoneNumber"></dxi-item>
-      </dxi-item>
-    </dxo-form>
+    <dxo-selection mode="single"></dxo-selection>
 
-    <dxo-popup
-      [showTitle]="true"
-      title="Enter Contact Data"
-      [width]="700"
-      [height]="525"
-    ></dxo-popup>
-  </dxo-editing>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-header-filter [visible]="true"></dxo-header-filter>
+    <dxo-search-panel [visible]="true" [width]="300"></dxo-search-panel>
 
-  <dxo-filter-row [visible]="true"></dxo-filter-row>
-  <dxo-header-filter [visible]="true"></dxo-header-filter>
-  <dxo-search-panel [visible]="true" [width]="300"></dxo-search-panel>
+    <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+    <dxo-pager [showNavigationButtons]="true" [showInfo]="true"> </dxo-pager>
 
-  <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
-  <dxo-pager [showNavigationButtons]="true" [showInfo]="true"> </dxo-pager>
+    <dxo-load-panel [enabled]="true"> </dxo-load-panel>
 
-  <dxo-load-panel [enabled]="true"> </dxo-load-panel>
+    <dxo-toolbar>
+      <dxi-item name="addRowButton" showText="always"></dxi-item>
+      <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
 
-  <!-- <dxo-scrolling
-    mode="standard"
-    [useNative]="false"
-    [scrollByContent]="true"
-    [scrollByThumb]="true"
-    showScrollbar="onHover"
-  >
-  </dxo-scrolling> -->
-
-  <dxo-toolbar>
-    <dxi-item name="addRowButton" showText="always"></dxi-item>
-    <dxi-item name="searchPanel"></dxi-item>
-  </dxo-toolbar>
-
-  <dxi-column
-    dataField="id"
-    sortOrder="asc"
-    [visible]="false"
-    [allowEditing]="false"
-  >
-  </dxi-column>
-
-  <dxi-column dataField="name" alignment="center">
-    <dxi-validation-rule
-      type="required"
-      message="Name is Required."
-    ></dxi-validation-rule>
-    <dxi-validation-rule
-      type="pattern"
-      pattern="^[a-zA-Z\s]+$"
-      message="The name is not properly formated."
-    ></dxi-validation-rule>
-  </dxi-column>
-
-  <dxi-column dataField="email" alignment="center">
-    <dxi-validation-rule
-      type="required"
-      message="Email is Required."
-    ></dxi-validation-rule>
-    <dxi-validation-rule
-      type="email"
-      message="Email is InValid."
-    ></dxi-validation-rule>
-  </dxi-column>
-
-  <dxi-column dataField="phoneNumber" alignment="center" [allowSorting]="false">
-    <dxi-validation-rule
-      type="required"
-      message="Phone Number is Required."
-    ></dxi-validation-rule>
-    <dxi-validation-rule
-      type="stringLength"
-      [max]="10"
-      [min]="10"
-      message="The Phone number must contain 10 digits."
-    ></dxi-validation-rule>
-  </dxi-column>
-
-  <dxi-column type="buttons" caption="Action">
-    <dxi-button name="edit" cssClass="btn-crud"></dxi-button>
-    <dxi-button name="delete" cssClass="btn-crud"></dxi-button>
-  </dxi-column>
-</dx-data-grid>
-
-<div class="form-container">
-    <dx-form id="form" 
-    [colCount]="2" 
-    [(formData)]="formData" 
-    [visible]="formVisible"
-    labelLocation="top"
+    <dxi-column
+      dataField="id"
+      sortOrder="asc"
+      [visible]="false"
+      [allowEditing]="false"
     >
-    <dxi-item dataField="name" [isRequired]="true">
-      <dxi-validation-rule 
+    </dxi-column>
+
+    <dxi-column dataField="name" alignment="center">
+      <dxi-validation-rule
+        type="required"
+        message="Name is Required."
+      ></dxi-validation-rule>
+      <dxi-validation-rule
         type="pattern"
         pattern="^[a-zA-Z\s]+$"
-        message="Name is not properly formated."
-      >
-      </dxi-validation-rule>
-    </dxi-item>
-    <dxi-item dataField="email" [isRequired]="true">
-      <dxi-validation-rule 
+        message="The name is not properly formated."
+      ></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column dataField="email" alignment="center">
+      <dxi-validation-rule
+        type="required"
+        message="Email is Required."
+      ></dxi-validation-rule>
+      <dxi-validation-rule
         type="email"
         message="Email is InValid."
-      >
-      </dxi-validation-rule>
-    </dxi-item>
-    <dxi-item dataField="phoneNumber" [isRequired]="true">
-      <dxi-validation-rule 
+      ></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column
+      dataField="phoneNumber"
+      alignment="center"
+      [allowSorting]="false"
+    >
+      <dxi-validation-rule
+        type="required"
+        message="Phone Number is Required."
+      ></dxi-validation-rule>
+      <dxi-validation-rule
         type="stringLength"
         [max]="10"
         [min]="10"
-        message="Phone number must contain 10 digits."
-      >
-      </dxi-validation-rule>
-    </dxi-item>
-  
-  </dx-form>
-</div>
+        message="The Phone number must contain 10 digits."
+      ></dxi-validation-rule>
+    </dxi-column>
 
+    <dxi-column type="buttons" caption="Action" [visible]="false">
+      <dxi-button name="edit" cssClass="btn-crud"></dxi-button>
+      <dxi-button name="delete" cssClass="btn-crud"></dxi-button>
+    </dxi-column>
+  </dx-data-grid>
+
+  <div class="form-container">
+    <form>
+      <dx-form
+        id="form"
+        [(formData)]="formData"
+        labelLocation="top"
+        [readOnly]="isFormReadOnly"
+      >
+        <dxi-item dataField="name" [isRequired]="true">
+          <dxi-validation-rule
+            type="pattern"
+            pattern="^[a-zA-Z\s]+$"
+            message="Name is not properly formated."
+          >
+          </dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="email" [isRequired]="true">
+          <dxi-validation-rule type="email" message="Email is InValid.">
+          </dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item dataField="phoneNumber" [isRequired]="true">
+          <dxi-validation-rule
+            type="stringLength"
+            [max]="10"
+            [min]="10"
+            message="Phone number must contain 10 digits."
+          >
+          </dxi-validation-rule>
+        </dxi-item>
+
+        <dxi-item
+          itemType="button"
+          [buttonOptions]="saveButtonOptions"
+          cssClass="save-btn"
+        >
+        </dxi-item>
+
+        <dxi-item
+          itemType="button"
+          [buttonOptions]="deleteButtonOptions"
+          cssClass="rem-btn"
+        >
+        </dxi-item>
+      </dx-form>
+    </form>
+  </div>
+
+  <div class="popup-container">
+    <dx-popup
+      [width]="300"
+      [height]="150"
+      [showTitle]="true"
+      title="Confirm to Delete"
+      [hideOnOutsideClick]="false"
+      [showCloseButton]="false"
+      [(visible)]="isDeletePopupVisible"
+    >
+      <div class="popup">
+        <dx-button
+        text="Confirm"
+        type="success"
+        (onClick)="onDeleteClick($event)">
+        </dx-button>
+        <dx-button
+        text="Cancel"
+        type="danger"
+        (onClick)="isDeletePopupVisible = !isDeletePopupVisible">
+        </dx-button>
+      </div>
+    </dx-popup>
+  </div>
 
 </div>

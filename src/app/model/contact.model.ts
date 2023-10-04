@@ -2,5 +2,5 @@ export interface Contact {
     contactId: number,
     name: string,
     email: string,
-    phoneNumber: number
+    phoneNumber: string
 }

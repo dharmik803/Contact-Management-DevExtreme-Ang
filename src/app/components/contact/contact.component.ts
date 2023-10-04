@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { Contact } from 'src/app/model/contact.model';
 import { ContactService } from 'src/app/services/contact.service';
@@ -9,38 +10,64 @@ import { ContactService } from 'src/app/services/contact.service';
   styleUrls: ['./contact.component.css'],
 })
 export class ContactComponent implements OnInit {
+
+  // Variables initialized.
   contactList: Contact[] = [];
   updatedData!: Contact;
   addedData!: Contact;
   deletedData!: Contact[];
-  formData!: Contact;
-  formVisible!: boolean;
+  formData: Contact = {
+    contactId: 0,
+    name: '',
+    email: '',
+    phoneNumber: '',
+  };
+  editingOptions: any;
+  editedRowKey: any = null;
+  isFormReadOnly!: boolean;
+  isDeletePopupVisible: boolean = false;
 
-  @ViewChild(DxDataGridComponent)
+
+  //  ViewChild decorator
+  @ViewChild(DxDataGridComponent, { static: false })
   dataGrid!: DxDataGridComponent;
 
+  //constructor method
   constructor(private serv: ContactService) {}
 
   // OnInit
   ngOnInit(): void {
+    
+    this.onLoadGetContactList();
+
+    // Editing options
+    this.editingOptions = {
+      mode: 'row',
+      allowUpdating: true,
+      allowDeleting: true,
+      allowAdding: true,
+      useIcons: true,
+    };
+  }
+
+
+  // Get Contact list method 
+  onLoadGetContactList(){
     this.serv.getContactList().subscribe((data) => {
       this.contactList = data;
     });
-    this.formVisible = false;
   }
 
 
   // Add row data function
-  onInitNewRow(event: any){
-    this.formVisible = true;
+  onInitNewRow(event: any) {
     this.formData = {
       contactId: 0,
       name: '',
       email: '',
-      phoneNumber: 0
-    }
+      phoneNumber: '',
+    };
   }
-
 
   onInsertedRow(event: any) {
     console.log(event);
@@ -52,63 +79,106 @@ export class ContactComponent implements OnInit {
       phoneNumber: event.data.phoneNumber,
     };
 
-    this.serv.addContact(this.addedData).subscribe((res) => {
-      
+    this.serv.addContact(this.addedData).subscribe(() => {
+      this.onLoadGetContactList();
     });
-    this.formVisible = false;
   }
 
   // Edit row data function
-  onEditingStart(event: any){
-    this.formVisible = true;
-    this.formData = event.data
+  onEditingStart(event: any) {
+    this.formData = event.data;
   }
 
-  onEditCanceled(){
-    this.formVisible = false;
+  onRowUpdating(event: any) {
+    console.log(event);
   }
 
   onRowUpdated(event: any) {
-
-    const tempData = this.contactList.find((data) => data.contactId === event.data.contactId);
+    const tempData = this.contactList.find(
+      (data) => data.contactId === event.data.contactId
+    );
     this.updatedData = {
       contactId: tempData?.contactId,
       name: tempData?.name,
       email: tempData?.email,
       phoneNumber: tempData?.phoneNumber,
     } as Contact;
-
-    this.serv.updateContact(this.updatedData).subscribe((res) => {
-    });
-    this.formVisible = false;
+    this.serv.updateContact(this.updatedData).subscribe((res) => {});
   }
+
 
   // Delete row data function
   onRowRemoved(event: any) {
-
-    this.serv.deleteContact(event.data.contactId).subscribe((res) => {
-      
-    });
+    this.serv.deleteContact(event.data.contactId).subscribe((res) => {});
   }
 
 
+  // On focus Row Data changed function from here
+  onFocusedRowChanged(event: any) {
+    this.formData = event.row.data;
+  }
 
-  // On Row Selection printing the name.
-  // selectedContact!: Contact;
 
-  // selectContact(c: any) {
-  //   c.component.byKey(c.currentSelectedRowKeys[0]).done((contact: any) => {
-  //     if (contact) {
-  //       this.selectedContact = contact;
-  //     }
-  //   });
-  // }
+  // on Row doble click event editing function
+  onRowDblClick(event: any) {
+    if(event.data.key !== this.editedRowKey){
+      this.dataGrid.instance.editRow(event.rowIndex);
+      this.editedRowKey = event.data.key;
+    }
+  } 
 
-  // onRowPrepared(event: any) {
-  //   if(event.rowType === 'data') {
-  //     if(event.data.name.includes('Uchiha')) {
-  //       event.rowElement.style.cssText = "color: white; background-color: green; text-align: center";
-  //     }
-  //   }
-  // }
+
+  // ON submit form button data value updated or added.
+  saveButtonOptions = {
+    text: "Save",
+    type: "success",
+    onClick: this.onSaveClick.bind(this)
+  }
+
+  onSaveClick(event: any) {
+    const contact: Contact = {
+      contactId: this.formData.contactId,
+      name: this.formData.name,
+      email: this.formData.email,
+      phoneNumber: this.formData.phoneNumber
+    }
+
+    console.log(contact);
+
+    if(contact.contactId === undefined){
+      this.serv.addContact(contact).subscribe(res => {
+        console.log('added')
+      })
+    }
+    else{
+      this.serv.updateContact(contact).subscribe(res => {
+        console.log('updated')
+      });
+    }
+  }
+
+
+  // Form on Delete button method.
+  deleteButtonOptions = {
+    text: 'Delete',
+    type: 'danger',
+    onClick: this.onClickOpenPopup.bind(this)
+  }
+
+  onClickOpenPopup(){
+    this.isDeletePopupVisible = true;
+  }
+
+  onDeleteClick(event: any){
+    const id = this.formData.contactId
+    console.log(id)
+    if(id !== undefined){
+      this.serv.deleteContact(id).subscribe(res => {
+        console.log('deleted')
+        this.onLoadGetContactList();
+      })
+    }
+    this.isDeletePopupVisible = !this.isDeletePopupVisible;
+  }
+  
 }
