@@ -21,5 +21,9 @@ export class HeaderComponent implements OnInit {
   onContactRouter(){
     this.route.navigate(['contact']);
   }
+
+  onTaskRouter(){
+    this.route.navigate(['/task']);
+  }
   
 }

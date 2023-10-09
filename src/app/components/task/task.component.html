@@ -1,0 +1,149 @@
+<div class="task-container">
+  <h1 style="text-align: center; font-weight: bold">Task Information</h1>
+
+  <dx-data-grid
+    id="gridContainer"
+    [dataSource]="taskList"
+    keyExpr="taskId"
+    [rowAlternationEnabled]="true"
+    [showBorders]="true"
+    [width]="'100%'"
+    [columnAutoWidth]="true"
+    (onInitNewRow)="onInitNewRow($event)"
+    (onRowInserted)="onRowInserted($event)"
+    (onRowUpdated)="onRowUpdated($event)"
+    (onRowRemoved)="onRowRemoved($event)"
+    (onRowPrepared)="onRowPrepared($event)"
+  >
+
+    <!-- pagging elements here -->
+    <dxo-paging [pageSize]="10" [pageIndex]="0"></dxo-paging>
+    <dxo-pager [showNavigationButtons]="true" [showInfo]="true"> </dxo-pager>
+
+    <!-- search panel element -->
+    <dxo-search-panel
+      [visible]="true"
+      [width]="250"
+      [highlightCaseSensitive]="true"
+    ></dxo-search-panel>
+
+    <!-- loader -->
+    <dxo-load-panel [enabled]="true" > </dxo-load-panel>
+
+    <!-- toolbar options here -->
+    <dxo-toolbar>
+        <dxi-item name="addRowButton" showText="always"></dxi-item>
+        <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
+
+    <!-- add and update popup code here -->
+    <dxo-editing
+      mode="popup"
+      [allowUpdating]="true"
+      [allowAdding]="true"
+      [allowDeleting]="true"
+      [useIcons]="true"
+    >
+    <dxo-popup
+        title="Task Info"
+        [showTitle]="true"
+        [width]="800"
+        [height]="450"
+      >
+    </dxo-popup>
+      <!-- form of the popup -->
+      <dxo-form>
+        <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+            <dxi-item dataField="title"></dxi-item>
+            <dxi-item dataField="dueDate" editorType="dxDateBox"></dxi-item>
+            <dxi-item dataField="description" editorType="dxTextArea" [editorOptions]="{ height: 100 }" [colSpan]="2"></dxi-item>
+            <dxi-item dataField="priority"
+                editorType="dxSelectBox"
+                [editorOptions]="{ items: priorities, value: priorities }"
+            ></dxi-item>
+            <dxi-item dataField="status"
+                editorType="dxSelectBox"
+                [editorOptions]="{ items: status, value: status }"
+            ></dxi-item>
+            <dxi-item dataField="assignedToId"
+                editorType="dxSelectBox"
+                [editorOptions]="assignedTo"
+                caption="Assigned To"
+            ></dxi-item>
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
+
+
+      <!-- column of the table  -->
+    <dxi-column
+        dataField="taskId"
+        sortOrder="asc"
+        [visible]="false"
+        [allowEditing]="false"
+    >
+    </dxi-column>
+
+    <dxi-column
+        dataField="title"
+        alignment="left"
+        caption="Task Title"
+    >
+    <dxi-validation-rule
+        type="required"
+        message="Title is Required."
+      ></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column
+        dataField="description"
+        caption="Description of Task"
+    >
+    <dxi-validation-rule
+        type="required"
+        message="Description is Required."
+      ></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column
+        dataField="dueDate"
+        dataType="date"
+        format="dd/MM/yyyy"
+    >
+    <dxi-validation-rule
+        type="required"
+        message="Date is Required."
+      ></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column
+        dataField="priority"
+    >
+    </dxi-column>
+
+    <dxi-column
+        dataField="status"
+    >
+    </dxi-column>
+
+    <dxi-column
+        dataField="assignedToId"
+        [visible]="false"
+    >
+    </dxi-column>
+
+    <dxi-column
+        dataField="assignedTo.name"
+        caption="Assigned Person"
+    >
+    </dxi-column>
+
+    <dxi-column type="buttons" caption="Action">
+        <dxi-button name="edit" cssClass="btn-crud"></dxi-button>
+        <dxi-button name="delete" cssClass="btn-crud"></dxi-button>
+    </dxi-column>
+    <!-- ------------------------------------------------------------------- -->
+
+
+  </dx-data-grid>
+</div>

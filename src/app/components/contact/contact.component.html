@@ -3,11 +3,12 @@
 
   <dx-data-grid
     [dataSource]="contactList"
+    keyExpr="contactId"
     [editing]="editingOptions"
     [columnAutoWidth]="true"
+    [rowAlternationEnabled]="true"
     [showBorders]="true"
     (onRowUpdated)="onRowUpdated($event)"
-    (onRowUpdating)="onRowUpdating($event)"
     (onRowInserted)="onInsertedRow($event)"
     (onRowRemoved)="onRowRemoved($event)"
     (onInitNewRow)="onInitNewRow($event)"
@@ -150,7 +151,7 @@
         <dx-button
         text="Confirm"
         type="success"
-        (onClick)="onDeleteClick($event)">
+        (onClick)="onFormDeleteClick($event)">
         </dx-button>
         <dx-button
         text="Cancel"

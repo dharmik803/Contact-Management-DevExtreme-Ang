@@ -53,9 +53,14 @@ export class ContactComponent implements OnInit {
 
   // Get Contact list method 
   onLoadGetContactList(){
-    this.serv.getContactList().subscribe((data) => {
+    this.serv.getContactList().subscribe(
+      (data) => {
       this.contactList = data;
-    });
+    },
+    (error) => {
+      console.log(`Failed to load the Contact List: ${error.message}`);
+    }
+    );
   }
 
 
@@ -79,18 +84,20 @@ export class ContactComponent implements OnInit {
       phoneNumber: event.data.phoneNumber,
     };
 
-    this.serv.addContact(this.addedData).subscribe(() => {
+    this.serv.addContact(this.addedData).subscribe(
+      () => {
+        console.log(`Contact has been Added!`);
       this.onLoadGetContactList();
-    });
+    },
+    (error) => {
+      console.log(`Failed to add Contact : ${error.message}`)
+    }
+    );
   }
 
   // Edit row data function
   onEditingStart(event: any) {
     this.formData = event.data;
-  }
-
-  onRowUpdating(event: any) {
-    console.log(event);
   }
 
   onRowUpdated(event: any) {
@@ -103,13 +110,27 @@ export class ContactComponent implements OnInit {
       email: tempData?.email,
       phoneNumber: tempData?.phoneNumber,
     } as Contact;
-    this.serv.updateContact(this.updatedData).subscribe((res) => {});
+    this.serv.updateContact(this.updatedData).subscribe(
+      () => {
+        console.log(`Contact has been Updated Successfully!`);
+      },
+      (error) => {
+        console.log(`Failed o update the Contact : ${error.message}`)
+      }
+    );
   }
 
 
   // Delete row data function
   onRowRemoved(event: any) {
-    this.serv.deleteContact(event.data.contactId).subscribe((res) => {});
+    this.serv.deleteContact(event.data.contactId).subscribe(
+      () => {
+        console.log(`Contact with the id ${event.data.contactId} has been Deleted!`);
+      },
+      (error) => {
+        console.log(`Failed to Delete the Contact with id ${event.data.contactId} : ${error.message}`)
+      }
+    );
   }
 
 
@@ -123,7 +144,7 @@ export class ContactComponent implements OnInit {
   onRowDblClick(event: any) {
     if(event.data.key !== this.editedRowKey){
       this.dataGrid.instance.editRow(event.rowIndex);
-      this.editedRowKey = event.data.key;
+      this.editedRowKey = null;
     }
   } 
 
@@ -132,10 +153,10 @@ export class ContactComponent implements OnInit {
   saveButtonOptions = {
     text: "Save",
     type: "success",
-    onClick: this.onSaveClick.bind(this)
+    onClick: this.onFormSaveClick.bind(this)
   }
 
-  onSaveClick(event: any) {
+  onFormSaveClick(event: any) {
     const contact: Contact = {
       contactId: this.formData.contactId,
       name: this.formData.name,
@@ -146,14 +167,23 @@ export class ContactComponent implements OnInit {
     console.log(contact);
 
     if(contact.contactId === undefined){
-      this.serv.addContact(contact).subscribe(res => {
-        console.log('added')
-      })
+      this.serv.addContact(contact).subscribe(
+        () => {
+          console.log(`Contact has been Created!`)
+          this.onLoadGetContactList();
+        },
+        (error) => {
+          console.log('Failed to create Contact : ' + error.message);
+        })
     }
     else{
-      this.serv.updateContact(contact).subscribe(res => {
-        console.log('updated')
-      });
+      this.serv.updateContact(contact).subscribe(
+        () => {
+          console.log('updated')
+        },
+        (error) => {
+          console.log(`Failed to update the Contact ; ${error.message}`)
+        });
     }
   }
 
@@ -169,14 +199,19 @@ export class ContactComponent implements OnInit {
     this.isDeletePopupVisible = true;
   }
 
-  onDeleteClick(event: any){
+  onFormDeleteClick(event: any){
     const id = this.formData.contactId
     console.log(id)
     if(id !== undefined){
-      this.serv.deleteContact(id).subscribe(res => {
-        console.log('deleted')
-        this.onLoadGetContactList();
-      })
+      this.serv.deleteContact(id).subscribe(
+        () => {
+          console.log(`Contact with the id ${id} has been Deleted!`);
+          this.onLoadGetContactList();
+        },
+        (error) => {
+          console.log(`Failed to delete the contact with id ${id} : ${error.message}`);
+        }
+      )
     }
     this.isDeletePopupVisible = !this.isDeletePopupVisible;
   }

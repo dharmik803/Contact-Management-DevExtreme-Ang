@@ -8,13 +8,15 @@ import { HomeComponent } from './components/home/home.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { DevExtremeModule } from './devextreme.module';
 import { HttpClientModule } from '@angular/common/http';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    ContactComponent
+    ContactComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
