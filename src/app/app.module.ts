@@ -7,8 +7,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { DevExtremeModule } from './devextreme.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TaskComponent } from './components/task/task.component';
+import { LoginComponent } from './components/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { TokeninterceptorService } from './services/tokeninterceptor.service';
 
 @NgModule({
   declarations: [
@@ -16,15 +19,17 @@ import { TaskComponent } from './components/task/task.component';
     HeaderComponent,
     HomeComponent,
     ContactComponent,
-    TaskComponent
+    TaskComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     DevExtremeModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokeninterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

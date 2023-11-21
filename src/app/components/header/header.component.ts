@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserAuthService } from 'src/app/services/user-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,22 +9,23 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private route: Router){}
+  constructor(private route: Router, private authServ: UserAuthService){}
 
   ngOnInit(): void {
     
   }
 
-  onHomeRouter(){
-    this.route.navigate(['home']);
-  }
+
   
   onContactRouter(){
-    this.route.navigate(['contact']);
+    this.route.navigate(['home/contact']);
   }
 
   onTaskRouter(){
-    this.route.navigate(['/task']);
+    this.route.navigate(['home/task']);
   }
   
+  onClickLogout(){
+    this.authServ.Logout();
+  }
 }

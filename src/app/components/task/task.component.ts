@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Contact } from 'src/app/model/contact.model';
 import { SelectContact, Task } from 'src/app/model/task.model';
 import { ContactService } from 'src/app/services/contact.service';
@@ -19,6 +20,9 @@ export class TaskComponent implements OnInit {
   assignedTo!: any;
   addItem!: Task;
 
+  // taskList$ = of(this.taskList);
+
+
   constructor(
     private taskService: TaskService,
     private contactService: ContactService
@@ -27,6 +31,14 @@ export class TaskComponent implements OnInit {
   ngOnInit(): void {
     this.onLoadGetTaskList();
     this.onLoadGetContactList();
+
+  }
+
+  // get all Task list function
+  onLoadGetTaskList() {
+    this.taskService.getTaskList().subscribe((data) => {
+      this.taskList = data;
+    });
   }
 
   // Get all contact list function
@@ -38,11 +50,6 @@ export class TaskComponent implements OnInit {
         name: item.name,
       }));
 
-      // Select Dropdown items of array
-      // this.assignedTo = {
-      //   items: this.dropDownContacts.map((con) => con.name),
-      //   values: this.dropDownContacts.map((con) => con.id),
-      // };
 
       this.assignedTo = {
         dataSource: this.dropDownContacts,
@@ -50,13 +57,6 @@ export class TaskComponent implements OnInit {
         displayExpr: "name"
       }
 
-    });
-  }
-
-  // get all Task list function
-  onLoadGetTaskList() {
-    this.taskService.getTaskList().subscribe((data) => {
-      this.taskList = data;
     });
   }
 
@@ -91,9 +91,9 @@ export class TaskComponent implements OnInit {
     console.log(this.addItem);
 
     this.taskService.addTask(this.addItem).subscribe(
-      async () => {
-        await this.onLoadGetTaskList();
-        await this.onLoadGetContactList();
+      () => {
+        this.onLoadGetTaskList();
+        this.onLoadGetContactList();
       },
       (error) => {
         console.log(`Task has not been added : ${error.message}`);
@@ -114,9 +114,9 @@ export class TaskComponent implements OnInit {
     
       
     this.taskService.updateTask(tempData).subscribe(
-      async () => {
-        await this.onLoadGetTaskList();
-        await this.onLoadGetContactList();
+      () => {
+        this.onLoadGetTaskList();
+        this.onLoadGetContactList();
       },
       (error) => {
         console.log(`Failed to update the Task : ${error.message}`);
@@ -127,9 +127,9 @@ export class TaskComponent implements OnInit {
   // On Row data Delete client side api code
   onRowRemoved(event: any) {
     this.taskService.deleteTask(event.data.taskId).subscribe(
-      async () => {
-        await this.onLoadGetTaskList();
-        await this.onLoadGetContactList();
+      () => {
+        this.onLoadGetTaskList();
+        this.onLoadGetContactList();
       },
       (error) => {
         console.log(`Failed to Delete the Task : ${error.message}`);

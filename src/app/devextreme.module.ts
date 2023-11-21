@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { DxButtonGroupModule, DxButtonModule, DxDateBoxModule, DxSelectBoxModule, DxTextAreaModule } from 'devextreme-angular';
+import { DxButtonGroupModule, DxButtonModule, DxDateBoxModule, DxSelectBoxModule, DxTextAreaModule, DxTextBoxModule } from 'devextreme-angular';
 import { DxMenuModule } from "devextreme-angular";
 import { DxDataGridModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
 
@@ -14,7 +14,8 @@ import { DxDataGridModule, DxFormModule, DxPopupModule } from 'devextreme-angula
         DxButtonGroupModule,
         DxSelectBoxModule,
         DxTextAreaModule,
-        DxDateBoxModule
+        DxDateBoxModule,
+        DxTextBoxModule 
     ]
 })
 

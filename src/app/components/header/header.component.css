@@ -1,0 +1,7 @@
+::ng-deep .dx-menu-item-wrapper:last-child {
+    float: right !important;
+}
+
+::ng-deep .dx-menu-items-container {
+    width: 100% !important;
+}

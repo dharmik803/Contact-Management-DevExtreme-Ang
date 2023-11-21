@@ -18,6 +18,8 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@types/angular": "^1.8.6",
+    "@types/devextreme": "^16.2.1",
     "devextreme": "^23.1.5",
     "devextreme-angular": "^23.1.5",
     "devextreme-schematics": "^1.6.1",
